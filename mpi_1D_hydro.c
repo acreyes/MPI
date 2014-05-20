@@ -349,14 +349,17 @@ int main(int argc, char ** argv){
 
   
   int N, type; N = num_procs*100;
-  type = 1;
+  type = 2;
   int zones_to_do = N/num_procs;
   double dt = 0.001; int count = 0;char str[80];
 
   FILE *fid, *finit;
+  int num,counts,dat_count;
+  num = 3; counts = 0; dat_count=0;
+
 
   double dx = 1./(double)N;
-  double t, T; t = 0.; T = .15;
+  double t, T; t = 0.; T = .5;
   Vars * U = malloc((N+4)*sizeof(Vars)); init_sys(N+4, U, dx, type);
   if(my_id == 0){
     /*I am root*/
@@ -370,6 +373,19 @@ int main(int argc, char ** argv){
     /*Broadcast U*/
     ierr = MPI_Bcast(U, N+4, mpi_Vars, 0, MPI_COMM_WORLD);
     //break;
+    /*    if(my_id == 0){//i am root
+      if(counts % num == 0){//write data
+	char name[800];
+	sprintf(name,"T_%d.dat",dat_count);
+	fid = fopen(name, "w");
+	Write_Cons(N+4,U,dx,fid);
+	dat_count += 1;
+      }
+      counts+=1;
+      }*/
+    if(my_id == 0){//i am root
+      printf("T=%f\n", t);
+    }
   }
   if(my_id == 0){
     /*I am Root*/
