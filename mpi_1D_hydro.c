@@ -193,7 +193,7 @@ void advance_system(int N, Vars * U, double dx, double dt, int type, int my_id, 
   Vars * Un = malloc(N*sizeof(Vars));
   Vars * U_temp = malloc(zones_to_do*sizeof(Vars));
   MPI_Status status;
-  FILE * fid = fopen("test.dat","w");
+
   if(my_id == 0){
     int start, end;
 
@@ -348,15 +348,15 @@ int main(int argc, char ** argv){
   /*start the program*/
 
   
-  int N, type; N = num_procs*100;
-  type = 1;
+  int N, type; N = num_procs*50;
+  type = 2;
   int zones_to_do = N/num_procs;
   double dt = 0.001; int count = 0;char str[80];
 
   FILE *fid, *finit;
 
   double dx = 1./(double)N;
-  double t, T; t = 0.; T = .15;
+  double t, T; t = 0.; T = .6;
   Vars * U = malloc((N+4)*sizeof(Vars)); init_sys(N+4, U, dx, type);
   if(my_id == 0){
     /*I am root*/
